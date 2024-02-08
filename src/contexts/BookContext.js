@@ -1,25 +1,13 @@
-import React, { createContext, useState } from 'react';
-import {v1 as uuid} from 'uuid';
+import React, { createContext, useReducer } from 'react';
+import { bookReducer } from '../reducers/bookReducer';
 
 export const BookContext = createContext();
 
 const BookContextProvider = (props) => {
-    const [books, setBooks] = useState([
-        {title: 'the colour of magic', author: 'terry pratchett', id: 1},
-        {title: 'the name of the wind', author: 'patrick rothfuss', id: 2},
-        {title: 'the final empire', author: 'brandon sanderson', id: 3}
-    ]);
-
-    const addBook = (title, author) => {
-        setBooks([...books, {title, author, id: uuid()}]);
-    }
-
-    const deleteBook = (id) => {
-        setBooks(books.filter(book => book.id !== id));
-    }
+    const [books, dispatch] = useReducer(bookReducer, []);
 
     return (
-        <BookContext.Provider value={{books, addBook, deleteBook}}>
+        <BookContext.Provider value={{books, dispatch}}>
             { props.children }
         </BookContext.Provider>
     );
